@@ -36,21 +36,23 @@ Vue.component('product', {
                   :disabled="!inStock"
                   :class="{ disabledButton: !inStock }">Add to Cart</button>
 
-          <div>
-            <h2>Reviews</h2>
-            <p v-if="!reviews.length">There are no reviews yet.</p>
-            <ul>
-              <li v-for="review in reviews">
-                <p>{{ review.name }}</p>
-                <p>Rating: {{ review.rating }}</p>
-                <p>{{ review.review }}</p>
-              </li>
-            </ul>
-          </div>
-
-          <product-review @review-submitted="addReview"></product-review>
-
         </div>
+
+        <product-tabs></product-tabs>
+
+        <div>
+          <p v-if="!reviews.length">There are no reviews yet.</p>
+          <ul>
+            <li v-for="review in reviews">
+              <p>{{ review.name }}</p>
+              <p>Rating: {{ review.rating }}</p>
+              <p>{{ review.review }}</p>
+            </li>
+          </ul>
+        </div>
+
+        <product-review @review-submitted="addReview"></product-review>
+
       </div>
     `,
     data() {
@@ -174,6 +176,26 @@ Vue.component('product-review', {
                 if (!this.review) this.errors.push("Review required.")
                 if (!this.rating) this.errors.push("Rating required.")
             }
+        }
+    }
+})
+
+Vue.component('product-tabs', {
+    template: `
+    <div>
+      <span class="tab"
+            :class="{ activeTab: selectedTab === tab }"
+            v-for="(tab, index) in tabs"
+            :key="index"
+            @click="selectedTab = tab">
+            {{ tab }}</span>
+    </div>
+
+    `,
+    data() {
+        return {
+            tabs: ['Reviews', 'Make a Review'],
+            selectedTab: 'Reviews'
         }
     }
 })
